@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +69,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+=======
+# Wavy
+ Wavy is a sleek, user-friendly, and fully responsive application that allows users to create, view, edit, and delete notes with ease. Built using React.js, it offers a dynamic and interactive experience, enhanced by beautiful 3D CSS effects, modern UI components, and smooth animations.
+>>>>>>> 84122fc8147adbecd01c9939c510db707b9ab704
