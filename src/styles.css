@@ -1,189 +1,514 @@
-/* General Styles */
+/* ======================
+   Root Variables & Reset
+========================= */
+:root {
+  --primary-color: #ff7e5f;
+  --secondary-color: #feb47b;
+  --accent-dark: #1a1f2e;
+  --bg-wall: #121212;
+  --wall-pattern: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 30px), repeating-linear-gradient(-45deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 30px);
+  --bg-card: #1e1e2e;
+  --text-dark: #e1e1e6;
+  --text-light: #ffffff;
+  --shadow-default: 0 8px 16px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.7);
+  --radius: 12px;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --sticky-yellow: #fff9c4;
+  --sticky-blue: #bbdefb;
+  --sticky-green: #c8e6c9;
+  --sticky-pink: #f8bbd0;
+  --sticky-purple: #d1c4e9;
+  --shadow-ambient: 0 4px 30px rgba(0, 0, 0, 0.3);
+  --shadow-pin: inset 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  /* Body Styling */
-  body {
-    background: linear-gradient(to right, #ffecd2, #fcb69f); /* Soft gradient background */
-    color: #333;
-    font-size: 16px;
-    line-height: 1.6;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Navbar Styling */
-  .navbar {
-    background-color: #333;
-    padding: 1.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .navbar a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 10px;
-    border-radius: 5px;
-    transition: color 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .navbar a:hover {
-    color: #333;
-    background-color: #fcb69f;
-  }
-  
-  /* Container Styles */
-  .container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-  }
-  
-  /* Notes Section */
-  .note {
-    background: #fff;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transform: translateY(20px);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
+/* ======================
+   Body & Wall Background
+========================= */
+body {
+  background-color: var(--bg-wall);
+  background-image: var(--wall-pattern);
+  color: var(--text-light);
+  font-size: 16px;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+  padding: 2rem;
+  min-height: 100vh;
+  overflow-x: hidden;
+  perspective: 1000px;
+}
+
+/* ======================
+   Navbar
+========================= */
+.navbar {
+  background-color: var(--accent-dark);
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-default);
+  position: relative;
+  z-index: 100;
+  border-bottom: 3px solid var(--primary-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navbar a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.navbar a:hover {
+  color: var(--secondary-color);
+  text-shadow: 0 0 8px rgba(255, 126, 95, 0.4);
+}
+
+.navbar a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ======================
+   Container
+========================= */
+.container {
+  max-width: 1080px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-default);
+  transition: box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.container:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* ======================
+   Notes Section - Wall-mounted Sticky Notes with Advanced 3D
+========================= */
+.notes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2.5rem;
+  padding: 1.5rem 0;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.note {
+  background: var(--sticky-yellow);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 
+    var(--shadow-pin),
+    0 4px 6px rgba(0, 0, 0, 0.15),
+    0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: perspective(800px) rotateX(2deg) rotateY(-3deg) translateZ(0);
+  backface-visibility: hidden;
+  color: #333;
+  position: relative;
+  min-height: 180px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform-origin: center top;
+}
+
+/* Push pin effect */
+.note::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at center, #f44336, #7b1e1e);
+  border-radius: 50%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+/* Variations in sticky note appearance */
+.note:nth-child(5n+1) { 
+  background: var(--sticky-yellow); 
+  transform: perspective(800px) rotate(-2deg) rotateX(2deg) translateZ(0);
+}
+.note:nth-child(5n+2) { 
+  background: var(--sticky-blue); 
+  transform: perspective(800px) rotate(1deg) rotateX(-1deg) translateZ(0);
+}
+.note:nth-child(5n+3) { 
+  background: var(--sticky-green); 
+  transform: perspective(800px) rotate(-1deg) rotateY(2deg) translateZ(0);
+}
+.note:nth-child(5n+4) { 
+  background: var(--sticky-pink); 
+  transform: perspective(800px) rotate(2deg) rotateY(-1deg) translateZ(0);
+}
+.note:nth-child(5n+5) { 
+  background: var(--sticky-purple); 
+  transform: perspective(800px) rotate(-1.5deg) rotateX(1deg) translateZ(0);
+}
+
+/* Top shading effect */
+.note::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius) var(--radius) 0 0;
+  z-index: 1;
+}
+
+/* Enhanced hover effect with 3D transformation */
+.note:hover {
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(-15px) translateZ(30px) scale(1.03);
+  box-shadow:
+    var(--shadow-pin),
+    0 15px 30px rgba(0, 0, 0, 0.25),
+    0 30px 60px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.note h2 {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.note p {
+  font-size: 1rem;
+  color: #444;
+  flex-grow: 1;
+}
+
+/* ======================
+   Advanced Note Appear Animation
+========================= */
+@keyframes noteAppear {
+  0% {
     opacity: 0;
-    animation: slideUp 0.6s ease-out forwards;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: perspective(800px) rotateX(30deg) translateY(-100px) scale(0.8);
   }
-  
-  .note:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  50% {
+    opacity: 1;
+    transform: perspective(800px) rotateX(-5deg) translateY(20px) scale(1.05);
   }
-  
-  .note h2 {
-    font-size: 1.5rem;
-    color: #fcb69f;
-    margin-bottom: 1rem;
+  75% {
+    transform: perspective(800px) rotateX(2deg) translateY(-10px) scale(0.98);
   }
-  
-  .note p {
-    font-size: 1rem;
-    color: #555;
+  100% {
+    transform: perspective(800px) rotateX(0deg) translateY(0) scale(1);
   }
-  
-  /* Note Form Styling */
-  .note-form {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.note.new {
+  animation: noteAppear 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* ======================
+   Fall Off Animation - Enhanced 3D Effect
+========================= */
+@keyframes fallOff {
+  0% {
+    transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0) translateZ(0);
+    opacity: 1;
+    box-shadow: var(--shadow-default);
   }
-  
-  .note-form input,
-  .note-form textarea {
-    display: block;
-    width: 100%;
+  20% {
+    transform: perspective(800px) rotateX(5deg) rotateY(10deg) translateY(0) translateZ(0);
+  }
+  60% {
+    transform: perspective(800px) rotateX(40deg) rotateY(20deg) translateY(100px) translateZ(-50px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: perspective(800px) rotateX(90deg) rotateY(40deg) translateY(300px) translateZ(-200px);
+    opacity: 0;
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+.note.removing {
+  animation: fallOff 0.9s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  pointer-events: none;
+}
+
+/* ======================
+   Note Form - Dark Theme
+========================= */
+.note-form {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-default);
+  margin-bottom: 2rem;
+  border-left: 4px solid var(--primary-color);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Form background gradient effect */
+.note-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255, 126, 95, 0.05), transparent);
+  z-index: 0;
+}
+
+.note-form input,
+.note-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.note-form input:focus,
+.note-form textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(255, 126, 95, 0.2);
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.note-form input::placeholder,
+.note-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.note-form button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(255, 126, 95, 0.3);
+}
+
+.note-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 126, 95, 0.5);
+}
+
+.note-form button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(255, 126, 95, 0.3);
+}
+
+/* Button pulse effect for focus state */
+@keyframes buttonPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 126, 95, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 126, 95, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 126, 95, 0);
+  }
+}
+
+.note-form button:focus {
+  animation: buttonPulse 1.5s infinite;
+}
+
+/* ======================
+   Note Actions & Buttons - Dark Theme
+========================= */
+.note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.note-actions button {
+  background-color: #2c3e50;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Button shine effect on hover */
+.note-actions button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: all 0.5s ease;
+}
+
+.note-actions button:hover::before {
+  left: 100%;
+}
+
+.note-actions button:hover {
+  background-color: #1a2533;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific button styles */
+.note-actions button.delete {
+  background-color: #7b1e1e;
+}
+
+.note-actions button.delete:hover {
+  background-color: #a93226;
+}
+
+.note-actions button.edit {
+  background-color: #145a32;
+}
+
+.note-actions button.edit:hover {
+  background-color: #1e8449;
+}
+
+.note-actions button.view {
+  background-color: #154360;
+}
+
+.note-actions button.view:hover {
+  background-color: #1f618d;
+}
+
+/* ======================
+   Advanced 3D Transforms for Interaction
+========================= */
+@keyframes noteWiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-1deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
+}
+
+.note:active {
+  animation: noteWiggle 0.5s ease;
+}
+
+/* ======================
+   Responsive Design
+========================= */
+@media (max-width: 1024px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 0.5rem;
     padding: 1rem;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border-color 0.3s ease;
   }
-  
-  .note-form input:focus,
-  .note-form textarea:focus {
-    border-color: #fcb69f;
-    outline: none;
+
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
-  
-  .note-form button {
-    padding: 0.75rem 1.5rem;
-    background-color: #fcb69f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+
+  .note h2 {
+    font-size: 1.2rem;
   }
-  
-  .note-form button:hover {
-    background-color: #ffecd2;
-    transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
   }
-  
-  /* Note Actions Styling */
-  .note-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
+
+  .notes-container {
+    grid-template-columns: 1fr;
   }
-  
+
+  .note-form button,
   .note-actions button {
-    background-color: #333;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
-  
-  .note-actions button:hover {
-    background-color: #fcb69f;
+
+  .note-actions {
+    flex-direction: column;
   }
-  
-  /* Media Queries for Mobile */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1.5rem;
-    }
-  
-    .navbar {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .note-form input,
-    .note-form textarea {
-      padding: 1rem;
-      font-size: 1.2rem;
-    }
-  
-    .note h2 {
-      font-size: 1.2rem;
-    }
-  
-    .note-actions button {
-      padding: 0.5rem;
-    }
-  }
-  
-  /* Animations */
-  @keyframes slideUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  
+}
