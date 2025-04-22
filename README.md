@@ -73,3 +73,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # Wavy
  Wavy is a sleek, user-friendly, and fully responsive application that allows users to create, view, edit, and delete notes with ease. Built using React.js, it offers a dynamic and interactive experience, enhanced by beautiful 3D CSS effects, modern UI components, and smooth animations.
 >>>>>>> 84122fc8147adbecd01c9939c510db707b9ab704
+
+
+
+
+The deployed link is https://todo-list-gamma-two.vercel.app/   
